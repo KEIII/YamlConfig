@@ -1,0 +1,7 @@
+imports:
+  - { resource: imported.yml }
+
+root:
+  key: value
+  replaced: %somekey%
+  version: %version%
