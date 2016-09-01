@@ -1,6 +1,6 @@
 <?php
 
-namespace KEIII\YamlConfigtests;
+namespace KEIII\YamlConfigTests;
 
 use KEIII\YamlConfig\Loader;
 use KEIII\YamlConfig\ParametersReplacer;
@@ -15,7 +15,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testLoad()
     {
-        $locator = new FileLocator(__DIR__.'/fixtures');
+        $locator = new FileLocator(__DIR__.DIRECTORY_SEPARATOR.'fixtures');
         $yamlParser = new YamlParser();
         $yamlLoader = new YamlLoader($locator, $yamlParser);
         $replacer = new ParametersReplacer(['version' => 123]);
