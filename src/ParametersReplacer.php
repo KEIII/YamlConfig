@@ -35,7 +35,7 @@ class ParametersReplacer
                 throw new \InvalidArgumentException();
             }
 
-            $replacements = array_replace($replacements, $parameters);
+            $replacements = array_replace($parameters, $replacements);
         }
 
         foreach ($replacements as $paramKey => $paramValue) {
