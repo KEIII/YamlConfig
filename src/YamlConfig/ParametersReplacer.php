@@ -32,7 +32,7 @@ class ParametersReplacer
 
         if (array_key_exists('parameters', $content)) {
             if (!is_array($parameters = $content['parameters'])) {
-                throw new \InvalidArgumentException();
+                throw new \InvalidArgumentException(sprintf('Parameters should be array but "%s" given.', gettype($parameters)));
             }
 
             $replacements = array_replace($parameters, $replacements);
