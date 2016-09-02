@@ -21,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "KEIII\\YamlConfig\\": "src"
+            "KEIII\\YamlConfig\\": "src/YamlConfig"
         }
     },
     "autoload-dev": {
