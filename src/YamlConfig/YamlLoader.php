@@ -37,7 +37,7 @@ class YamlLoader extends FileLoader
     public function load($resource, $type = null)
     {
         $filepath = $this->getLocator()->locate($resource);
-        $content = $this->parser->parse($this->fileGetContent($filepath));
+        $content = $this->parser->parse(file_get_contents($filepath));
         $content = $this->parseImports($content, $resource);
 
         return $content;
@@ -86,35 +86,5 @@ class YamlLoader extends FileLoader
         }
 
         return call_user_func_array('array_replace_recursive', array_reverse($parts));
-    }
-
-    /**
-     * @param string $filepath
-     *
-     * @return string
-     *
-     * @throws \RuntimeException
-     */
-    private function validateFile($filepath)
-    {
-        if (!is_file($filepath)) {
-            throw new \RuntimeException(sprintf('File "%s" not found.', $filepath));
-        }
-
-        if (!is_readable($filepath)) {
-            throw new \RuntimeException(sprintf('File "%s" is not readable.', $filepath));
-        }
-
-        return (string)$filepath;
-    }
-
-    /**
-     * @param string $filepath
-     *
-     * @return string
-     */
-    private function fileGetContent($filepath)
-    {
-        return file_get_contents($this->validateFile($filepath));
     }
 }
