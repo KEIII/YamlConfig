@@ -26,6 +26,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
                 'key' => 'value',
                 'replaced' => 'somevalue',
                 'version' => 123,
+                'escaped' => '%ver%ion%',
             ],
             'parameters' => [
                 'somekey' => 'somevalue',

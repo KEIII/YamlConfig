@@ -46,6 +46,15 @@ class ParametersReplacer
             });
         }
 
+        // unescape
+        array_walk_recursive($content, function (&$input) {
+            $unescaped = preg_replace('/^%%(.*)%%$/', '%${1}%', $input);
+
+            if ((string)$input !== (string)$unescaped) {
+                $input = $unescaped;
+            }
+        });
+
         return $content;
     }
 }
