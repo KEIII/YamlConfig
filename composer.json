@@ -1,7 +1,7 @@
 {
     "name": "keiii/yaml-config",
     "type": "library",
-    "description": "YAML config.",
+    "description": "YAML config utilize symfony components (The Config Component and The Yaml Component) to provide symfony like configuration for any application.",
     "keywords": ["yaml", "config"],
     "homepage": "https://github.com/KEIII",
     "license": "MIT",
