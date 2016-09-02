@@ -1,6 +1,6 @@
 <?php
 
-namespace KEIII\YamlConfigTests;
+namespace KEIII\YamlConfig\Tests;
 
 use KEIII\YamlConfig\ParametersReplacer;
 
