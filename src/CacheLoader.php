@@ -2,9 +2,9 @@
 
 namespace KEIII\YamlConfig;
 
+use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Cache Loader.
@@ -22,15 +22,22 @@ class CacheLoader implements LoaderInterface
     private $cacheDirPath;
 
     /**
+     * @var bool
+     */
+    private $debug;
+
+    /**
      * Constructor.
      *
      * @param LoaderInterface $loader
-     * @param $cacheDirPath
+     * @param string          $cacheDirPath
+     * @param bool            $debug
      */
-    public function __construct(LoaderInterface $loader, $cacheDirPath)
+    public function __construct(LoaderInterface $loader, $cacheDirPath, $debug = true)
     {
         $this->loader = $loader;
-        $this->cacheDirPath = $cacheDirPath;
+        $this->cacheDirPath = (string)$cacheDirPath;
+        $this->debug = (bool)$debug;
     }
 
     /**
@@ -38,20 +45,16 @@ class CacheLoader implements LoaderInterface
      */
     public function load($resource, $type = null)
     {
-        $cacheFilepath = !$this->cacheDirPath ? false : $this->buildCacheFilepath($resource);
-        $hasCacheFile = !$cacheFilepath ? false : is_readable($cacheFilepath);
+        $filepath = $this->buildCacheFilepath($resource);
+        $configCache = new ConfigCache($filepath, $this->debug);
 
-        if ($hasCacheFile) {
-            return require $cacheFilepath;
+        if ($configCache->isFresh()) {
+            return require $filepath;
         }
 
         $content = $this->loader->load($resource);
-
-        if ($cacheFilepath) {
-            $fileContent = $this->generateConfigFileContent($content);
-            $filesystem = new Filesystem();
-            $filesystem->dumpFile($cacheFilepath, $fileContent);
-        }
+        $fileContent = $this->generateConfigFileContent($content);
+        $configCache->write($fileContent);
 
         return $content;
     }

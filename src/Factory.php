@@ -14,10 +14,11 @@ class Factory
      * @param string      $configPath
      * @param array|null  $replacements
      * @param string|null $cachePath
+     * @param bool        $debug
      *
      * @return LoaderInterface
      */
-    public static function create($configPath, array $replacements = null, $cachePath = null)
+    public static function create($configPath, array $replacements = null, $cachePath = null, $debug = true)
     {
         $locator = new FileLocator((string)$configPath);
         $yamlParser = new YamlParser();
@@ -25,6 +26,6 @@ class Factory
         $replacer = new ParametersReplacer($replacements);
         $loader = new Loader($yamlLoader, $replacer);
 
-        return $cachePath ? new CacheLoader($loader, (string)$cachePath) : $loader;
+        return $cachePath ? new CacheLoader($loader, $cachePath, $debug) : $loader;
     }
 }
