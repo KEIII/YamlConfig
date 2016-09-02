@@ -3,12 +3,11 @@
 namespace KEIII\YamlConfig;
 
 use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\Config\Loader\LoaderResolverInterface;
 
 /**
  * Loader.
  */
-class Loader implements LoaderInterface
+class Loader implements SimpleLoaderInterface
 {
     /**
      * @var LoaderInterface
@@ -37,32 +36,8 @@ class Loader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function load($resource, $type = null)
+    public function load($resource)
     {
-        return $this->parametersReplacer->replace($this->loader->load($resource, $type));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($resource, $type = null)
-    {
-        return $this->supports($resource, $type);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getResolver()
-    {
-        return $this->getResolver();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setResolver(LoaderResolverInterface $resolver)
-    {
-        $this->loader->setResolver($resolver);
+        return $this->parametersReplacer->replace($this->loader->load($resource));
     }
 }

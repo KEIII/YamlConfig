@@ -2,43 +2,18 @@
 
 namespace KEIII\YamlConfig\Tests\fixtures;
 
-use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\Config\Loader\LoaderResolverInterface;
+use KEIII\YamlConfig\SimpleLoaderInterface;
 
 /**
  * Return a data array.
  */
-class FakeLoader implements LoaderInterface
+class FakeLoader implements SimpleLoaderInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function load($resource, $type = null)
+    public function load($resource)
     {
         return ['root' => ['key' => 'value']];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($resource, $type = null)
-    {
-        throw new \LogicException('Not implemented.');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getResolver()
-    {
-        throw new \LogicException('Not implemented.');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setResolver(LoaderResolverInterface $resolver)
-    {
-        throw new \LogicException('Not implemented.');
     }
 }

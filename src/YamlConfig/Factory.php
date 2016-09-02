@@ -3,7 +3,6 @@
 namespace KEIII\YamlConfig;
 
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Yaml\Parser as YamlParser;
 
 class Factory
@@ -16,7 +15,7 @@ class Factory
      * @param string|null $cachePath
      * @param bool        $debug
      *
-     * @return LoaderInterface
+     * @return SimpleLoaderInterface
      */
     public static function create($configPath, array $replacements = null, $cachePath = null, $debug = true)
     {

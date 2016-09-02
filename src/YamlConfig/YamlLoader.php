@@ -9,7 +9,7 @@ use Symfony\Component\Yaml\Parser as YamlParser;
 /**
  * Loader loads YAML files.
  */
-class YamlLoader extends FileLoader
+class YamlLoader extends FileLoader implements SimpleLoaderInterface
 {
     /**
      * @var YamlParser
@@ -70,7 +70,7 @@ class YamlLoader extends FileLoader
         }
 
         $defaultDirectory = dirname($filepath);
-        $imports = $content['imports'];
+        $imports = (array)$content['imports'];
         unset($content['imports']);
         $parts = [$content];
 
@@ -79,7 +79,10 @@ class YamlLoader extends FileLoader
                 throw new \InvalidArgumentException(sprintf('The values in the "imports" key should be arrays in %s. Check your YAML syntax.', $filepath));
             }
 
-            /** @noinspection DisconnectedForeachInstructionInspection */
+            if (!array_key_exists('resource', $import)) {
+                throw new \InvalidArgumentException('Resource not found.');
+            }
+
             $this->setCurrentDir($defaultDirectory);
             $ignoreErrors = array_key_exists('ignore_errors', $import) ? (bool)$import['ignore_errors'] : false;
             $parts[] = $this->import($import['resource'], null, $ignoreErrors, $filepath);

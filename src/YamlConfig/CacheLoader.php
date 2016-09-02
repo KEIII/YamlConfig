@@ -3,16 +3,14 @@
 namespace KEIII\YamlConfig;
 
 use Symfony\Component\Config\ConfigCache;
-use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\Config\Loader\LoaderResolverInterface;
 
 /**
  * Cache Loader.
  */
-class CacheLoader implements LoaderInterface
+class CacheLoader implements SimpleLoaderInterface
 {
     /**
-     * @var LoaderInterface
+     * @var SimpleLoaderInterface
      */
     private $loader;
 
@@ -29,11 +27,11 @@ class CacheLoader implements LoaderInterface
     /**
      * Constructor.
      *
-     * @param LoaderInterface $loader
-     * @param string          $cacheDirPath
-     * @param bool            $debug
+     * @param SimpleLoaderInterface $loader
+     * @param string                $cacheDirPath
+     * @param bool                  $debug
      */
-    public function __construct(LoaderInterface $loader, $cacheDirPath, $debug = true)
+    public function __construct(SimpleLoaderInterface $loader, $cacheDirPath, $debug = true)
     {
         $this->loader = $loader;
         $this->cacheDirPath = (string)$cacheDirPath;
@@ -43,7 +41,7 @@ class CacheLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function load($resource, $type = null)
+    public function load($resource)
     {
         $filepath = $this->buildCacheFilepath($resource);
         $configCache = new ConfigCache($filepath, $this->debug);
@@ -85,29 +83,5 @@ class CacheLoader implements LoaderInterface
         $lines[] = '';
 
         return implode(PHP_EOL, $lines);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($resource, $type = null)
-    {
-        return $this->loader->supports($resource, $type);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getResolver()
-    {
-        return $this->loader->getResolver();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setResolver(LoaderResolverInterface $resolver)
-    {
-        $this->loader->setResolver($resolver);
     }
 }
