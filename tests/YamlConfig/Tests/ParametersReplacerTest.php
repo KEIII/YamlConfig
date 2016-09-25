@@ -20,6 +20,7 @@ class ParametersReplacerTest extends \PHPUnit_Framework_TestCase
             'version' => '%version%',
             'key' => '%oldvalue%',
             'key2' => '%dynamicKey%',
+            'key3' => '%dynamicKey%withappendix',
             'parameters' => [
                 'oldvalue' => 'newvalue',
                 'dynamicKey' => 'dynamicValue1',
@@ -29,6 +30,7 @@ class ParametersReplacerTest extends \PHPUnit_Framework_TestCase
             'version' => 123,
             'key' => 'newvalue',
             'key2' => 'dynamicValue2',
+            'key3' => 'dynamicValue2withappendix',
             'parameters' => [
                 'oldvalue' => 'newvalue',
                 'dynamicKey' => 'dynamicValue1',

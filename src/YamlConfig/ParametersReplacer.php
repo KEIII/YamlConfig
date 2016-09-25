@@ -40,9 +40,7 @@ class ParametersReplacer
 
         foreach ($replacements as $paramKey => $paramValue) {
             array_walk_recursive($content, function (&$input) use ($paramKey, $paramValue) {
-                if ($input === '%'.$paramKey.'%') {
-                    $input = $paramValue;
-                }
+                $input = str_replace(sprintf('%%%s%%', $paramKey), $paramValue, $input);
             });
         }
 
