@@ -38,23 +38,60 @@ class ParametersReplacer
             $replacements = array_replace($parameters, $replacements);
         }
 
-        foreach ($replacements as $paramKey => $paramValue) {
-            array_walk_recursive($content, function (&$input) use ($paramKey, $paramValue) {
-                if ($input === '%'.$paramKey.'%') {
-                    $input = $paramValue;
-                }
-            });
-        }
+        $resolveCallback = function ($match) use ($replacements) {
+            // skip %%
+            if (!array_key_exists(1, $match)) {
+                return '%%';
+            }
 
-        // unescape
-        array_walk_recursive($content, function (&$input) {
-            $unescaped = preg_replace('/^%%(.*)%%$/', '%${1}%', $input);
+            $key = $match[1];
 
-            if ((string)$input !== (string)$unescaped) {
-                $input = $unescaped;
+            if (!array_key_exists($key, $replacements)) {
+                throw new \InvalidArgumentException(sprintf('Required parameter "%s" not found.', $key));
+            }
+
+            return $replacements[$key];
+        };
+
+        array_walk_recursive($content, function (&$input) use ($resolveCallback) {
+            if (!is_string($input)) {
+                return;
+            }
+
+            if (preg_match('/^%([^%\s]+)%$/', $input, $match)) {
+                // we do this to deal with non string values (Boolean, integer, ...)
+                $input = $resolveCallback($match);
+            } else {
+                $input = preg_replace_callback('/%%|%([^%\s]+)%/', $resolveCallback, $input);
             }
         });
 
-        return $content;
+        return $this->unescape($content);
+    }
+
+    /**
+     * Unescape parameter placeholders %.
+     *
+     * @param array|string $value
+     *
+     * @return array|string
+     */
+    private function unescape($value)
+    {
+        if (is_string($value)) {
+            return str_replace('%%', '%', $value);
+        }
+
+        if (is_array($value)) {
+            $result = [];
+
+            foreach ((array)$value as $k => $v) {
+                $result[$k] = $this->unescape($v);
+            }
+
+            return $result;
+        }
+
+        return $value;
     }
 }

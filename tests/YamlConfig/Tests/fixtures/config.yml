@@ -5,4 +5,4 @@ root:
   key: value
   replaced: %somekey%
   version: %version%
-  escaped: %%ver%ion%%
+  escaped: %%ver%%ion%%
